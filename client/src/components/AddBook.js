@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
-import { getAuthorsQuery } from '../queries/queries';
+import { getAuthorsQuery, addBookMutation } from '../queries/queries';
 import { useState } from 'react';
 
 function AddBook() {
     const [book, setBook] = useState({name:'', genre:'', authorId:''});
+    // const [book, setBook] = useState(0);
+
     console.log(book)
 
     const { loading, error, data } = useQuery(getAuthorsQuery);
@@ -20,6 +22,7 @@ function AddBook() {
     
     function submitForm(e){
         e.preventDefault();
+        addBookMutation
         console.log(book);
 
     }
@@ -30,19 +33,19 @@ function AddBook() {
                 <label>
                     Book name:
                 </label>
-                <input type = "text" onChange = {e => {setBook({name:e.target.value})}}/>
+                <input type = "text" onChange = {e => {setBook(prev => Object.assign(prev, {name: e.target.value}))}} />
             </div>
             <div className="field">
                 <label>
                     Genre:
                 </label>
-                <input type = "text" onChange = {e => {setBook({genre:e.target.value})}}/>
+                <input type = "text" onChange = {e => {setBook(prev => Object.assign(prev, {genre: e.target.value}))}}/>
             </div>
             <div className="field">
                 <label>
                     Author:
                 </label>
-                <select onChange = {e => {setBook({authorId:e.target.value})}}>
+                <select onChange = {e => {setBook(prev => Object.assign(prev, {authorId: e.target.value}))}}>
                     <option>Select Author</option>
                     {displayAuthors()}
                 </select>
